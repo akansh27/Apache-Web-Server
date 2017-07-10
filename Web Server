@@ -1,0 +1,5 @@
+Web Server
+A program that, using the client/server model and World Wide Web’s HTTP, serves the files that form web pages to the web users.
+To process a request a web server may respond with a static HTML page or image, send a redirect or delegate the dynamic response generation to some other program such as CGI scripts, JSPs, servlets, ASPs, server side java scripts or some other server side technology.
+Web server employs various strategies for fault tolerance and scalability such as load balancing, caching and clustering.
+E.g., Apache, Tomcat, IBM HTTP Server, Microsoft IIS, lighttpd, Google GWS.
