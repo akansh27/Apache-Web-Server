@@ -40,36 +40,51 @@ As of July 2016, Apache remained the most widely used web server software, estim
 ## Important topics in Apache web server
 ### Installation
 ### Deployment
-###
+### Configuration
+### Authentication
+### Virtual Hosting
+### Plug-in Configuration
+### Logging
+### Load balancer
+### Error Codes
+### Troubleshooting
 
-## Installation
+## INSTALLATION
 Apache httpd uses libtools and autoconf to create a build environment that looks like many other Open source projects.
-Requirements
-APR and APR-Util
+#### Requirements
+* APR and APR-Util
 APR and APR-Util must be installed prior to building Apache httpd. Download latest versions of both unpack them into ./srclib/apr and ./srclib/apr-util and use ./configure - -with-included-apr option.
-Perl-Compatible Regular Expressions Library (PCRE)
+
+#### Perl-Compatible Regular Expressions Library (PCRE)
 This library is required but no longer bundled with httpd. Download the source code, or install a Port or Package.
-Disk Space
+
+#### Disk Space
 50 MB of temporary free disk space. After installation server occupies 10 MB of disk space.
-ANSI-C Compiler and Build System
+
+#### ANSI-C Compiler and Build System
 GNU C Compiler (GCC) from Free Software Foundation is recommended.
-Accurate time keeping
+
+#### Accurate time keeping
 ntpdate or xntpd programs are used which are based on NTP.
-Perl 5 (Optional)
+
+#### Perl 5 (Optional)
 For some of the scripts like apxs or dbmmanage (which are written in Perl) the Perl 5 interpreter is required
-Download
+
+#### Download
 ```
 Lynx httpd:/httpd.apache.org/download.cgi
 ```
 After downloading verify the version by testing the downloaded tarball against the PGP signature.
-Extract
+
+#### Extract
 Uncompress and untar
 ```
 gzip –d httpd-NN.tar.gz
 tar xvf httpd-NN.tar
 ```
 This will create a new directory under the current directory containing source code for distribution. Cd into the directory before proceeding with compiling the server.
-Configuring Source Tree
+
+#### Configuring Source Tree
 Configuring the Apache source tree for the particular platform and personal requirement. This is done using the script configure included in the root directory of the distribution. To configure source tree using all the default options ./configure. To change the default options, configure accepts a variety of variables and command line options.
 - - prefix – location where Apache is to be installed.
 Also at this point, you can specify which features you want included in Apache by enabling or disabling modules. The modules are compiled as dynamic shared objects (DSO) which can be loaded or unloaded at runtime. Can also choose to compile modules statically by using the option - - enable-module=static
@@ -79,14 +94,15 @@ e.g. $ CC=”pgcc’ CFLAGS=”-O2” \
 - -enable-ldap=shared 
 - -enable-lua=shared
 ```
-Build
+#### Build
 Build the various parts which form the Apache package by running $ make, this will require root privileges.
-Customize
+
+#### Customize
 By editing configuration files under PREFIX/conf/.
 ```
 $ vi PREFIX/conf/httpd.conf
 ```
-Test
+#### Test
 ```
 $ PREFIX/bin/apachectl –k start
 ```
@@ -94,7 +110,7 @@ You should be able to request your first document via the URL http://localhost/.
 ```
 $ PREFIX/bin/apachectl –k stop
 ```
-Upgrading
+#### Upgrading
 The make install process will not overwrite any of the existing documents, log files, or configuration files. To upgrade across minor versions, start by finding the file config.nice in the build directory of the installed server or at the root of the source tree for your old install. This will contain the exact configure command line that you used to configure the source tree. Then to upgrade from one version to next, copy the config.nice file to the source tree of the new version, edit it to make the desired changes and then run.
 ```
 $ ./config.nice
@@ -107,3 +123,45 @@ Can pass additional arguments to config.nice, which will be appended to the orig
 ```
 $ ./config.nice - -prefix=/home/test/apache - -with-port=90
 ```
+
+## CONFIGURATION
+
+Root of Apache’s config directory at /etc/httpd/ with inside conf, conf.d, logs modules, run.
+
+Conf directory holds the main apache configuration. Inside it’ll contain httpd.conf, magic and custom.
+### httpd.conf
+````
+/etc/httpd/conf/httpd.conf 
+```
+This is the first configuration file apache will read, and it contains most of the settings for apache by default.
+
+### magic 
+```
+/etc/httpd/conf/magic
+```
+Magic stores all information about MIME types (Multi-purpose Internet Mail Extensions). MIME types are essentially identifiers a web server and web client will use to indicate that a file is of a particular type.
+
+### custom
+Add an include directive at the end of httpd.conf
+```
+Include /etc/httpd/conf/custom/*.conf
+```
+### conf.d
+```
+/etc/httpd/conf.d/
+```
+It holds the module config files. The httpd.conf file will have the include directive that reads the files in this directory into the configuration right after a bunch of LoadModule directives.
+
+### Logs
+```
+/etc/httpd/logs/
+```
+Logs is a symlink to where apache stores it’s main configuration files, /var/log/httpd.
+
+### Modules
+‘Modules’ is a symlink to /usr/lib/httpd/modules. Those are the libraries that apache reads as modules to add features like server-side include and PHP support.
+
+### Run
+Symlink to /var/run/httpd. This directory holds only one file, and it should be running when apache running. That file “httpd.pid” stores the main process id for apache.
+
+### /etc/sysconfig
