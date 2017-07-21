@@ -1,4 +1,4 @@
-#Introduction
+# Introduction
 
 A Web server is a program that uses HTTP (Hypertext Transfer Protocol) to serve the files that form Web pages to users, in response to their requests, which are forwarded by their computers' HTTP clients. Dedicated computers and appliances may be referred to as Web servers as well.
 
@@ -129,6 +129,7 @@ $ ./config.nice - -prefix=/home/test/apache - -with-port=90
 Root of Apache’s config directory at /etc/httpd/ with inside conf, conf.d, logs modules, run.
 
 Conf directory holds the main apache configuration. Inside it’ll contain httpd.conf, magic and custom.
+
 ### httpd.conf
 ````
 /etc/httpd/conf/httpd.conf 
