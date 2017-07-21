@@ -166,3 +166,415 @@ Logs is a symlink to where apache stores it’s main configuration files, /var/l
 Symlink to /var/run/httpd. This directory holds only one file, and it should be running when apache running. That file “httpd.pid” stores the main process id for apache.
 
 ### /etc/sysconfig
+
+## VIRTUAL HOSTING
+Virtual host refers to practice of running more than one website on a single machine.
+Two types, IP-based (different IP for every web site) and name-based (multiple names running on each IP address)
+
+### Setup Name Based Virtual Host
+Create directory where you want to keep all your website’s files, under /var/www/html/. /var/www/html will be the default Document Root in Apache virtual configuration.
+
+```
+mkdir /var/www/html/example1.com/, mkdir /var/www/html/example2.com/
+```
+
+To set up Name based virtual hosting you need to tell Apache which IP you will be using to receive Apache requests for all the websites or domain names. Using NameVirtualHost directive in main configuration file.
+
+```
+vi /etc/httpd/conf/httpd.conf
+```
+```
+NameVirtualHost 192.168.0.100:80
+```
+
+Add VirtualHost directives
+```
+<VirtualHost 192.168.0.100:80>
+	ServerAdmin webmaster@example1.com
+	DocumentRoot /var/www/html/example1.com
+	ServerName www.example1.com
+	ServerAlias 
+ErrorLog logs/www.example1.com-error_log
+	CustomLog logs/www.example1.com-access_log common
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerAdmin webmaster@example2.com
+	DocumentRoot /var/www/html/example2.com
+	ServerName www.example2.com
+	ErrorLog logs/www.example2.com-error_log
+	CustomLog logs/www.example2.com-access_log common
+</VirtualHost>
+```
+
+Check the syntax
+```
+httpd –t
+```
+
+Create a test page called index.html and add some content to the file.
+```
+vi /var/www/html/example1.com/index.html
+```
+```
+<html>
+     <head>
+	<title>
+	  www.example1.com
+	</title>
+     </head>
+     <body>
+                  <h1> Hello, Welcome to www.example1.com. </h1>
+      </body>
+</hmtl>
+```
+Similarly for example2.com and test the setup by accessing both the domains in a browser.
+
+http://www.example1.com
+http://www.example2.com
+
+### Setup IP based Virtual Hosting
+Must have more than one IP address/Port assigned to the server. It can be on a single NIC card (eg, eth0:1, eth0:2…) Multiple NIC cards can also be attached.
+* Create Multiple IP Addresses on a Single Network Interface.
+Purpose of implementing IP based virtual Hosting is to assign IP for each domain and that particular IP will not be used by any other domain.
+This kind of set up is required when a website is running with SSL certificate or on different ports and IPs. And you can also run multiple instances of Apache on a single machine.
+```
+ifconfig
+eth0 192.168.0.100
+eth0:1 192.168.0.101
+```
+
+To assign a specific IP/Port to receive http requests, change the Listen directive in httpd.conf file.
+```
+vi /etc/httpd/conf/httpd.conf
+# Listen 80
+Listen 192.168.0.100:80
+```
+Create virtual host sections for both the domains.
+```
+<VirtualHost 192.168.0.100:80>
+	ServerAdmin webmaster@example1.com
+	DocumentRoot /var/www/html/example1.com
+	ServerName www.example1.com
+	ErrorLog logs/www.example1.com-error_log
+	CustomLog logs/www.example1.com-access_log common
+</VirtualHost>
+
+<VirtualHost 192.168.0.101:80>
+	ServerAdmin webmaster@example2.com
+	DocumentRoot /var/www/html/example2.com
+	ServerName www.example2.com
+	ErrorLog logs/www.example2.com-error_log
+	CustomLog logs/www.example2.com-access_log common
+</VirtualHost>
+```
+## AUTHENTICATION
+Apache authentication can be configured to require web site visitors to login with a user id and password. The login dialog box which requests the user id and password is provided by the web browser at the request of Apache. Apache allows the configuration to be entered in it’s configuration files (i.e. main configuration file /etc/httpd/conf/httpd.conf, supplementary configuration files /etc/httpd/conf.d/component.conf or in a file which resides with in the directory to be password protected.
+
+### Apache password file authentication
+Directory protection using .htaccess and .htpasswd
+1.	Editing the server configuration file to enable/allow a directory structure on the server to be password protected. <Directory> access permission statement need modification.
+2.	The creation and addition of two files specifying the actual logins and passwords (.htaccess and .htpasswd)
+Apache authentication uses the modules mod_auth and mod_access.
+```
+/etc/httpd/conf/httpd.conf
+```
+Default configuration disables the processing of .htaccess files for the system.
+```
+<Directory>
+AllowOverride None
+</Directory>
+```
+For a specified directory
+```
+<Directory /home/domain/public_html>
+Allowoverride None
+</Directory>
+```
+Change to specify directory to protect
+```
+<Directory /home/domain/public_html/membersonly>
+Allowoverride All
+</Directory>
+```
+Or
+```
+<Directory /home/domain/public_html/membersonly>
+Allowoverride AuthConfig
+</Directory>
+```
+Allowoverride Parameters: AuthConfig FileInfo Indexes Limits Options
+The name of the “distributed” and user controlled configuration file .htaccess is defined with the directive
+```
+AccessFileName .htaccess
+```
+### Password protection by single login
+
+1.	Create the directory you want to password protect.
+2.	Create file /home/domain/public_html/membersonly/.htaccess in that directory that looks something like:
+AuthName “Add your Login message here”
+AuthType Basic
+AuthUserFile /home/domain/public_html/membersonly/.htpasswd
+AuthGroupFile /dev/null
+Require user name-of-user
+3.	Create the password file /home/domain/public_html/membersonly/.htpasswd
+htpasswd –c .htpasswd name-of-user
+Add a new user to the existing password file:
+htpasswd .htpasswd name-of-user
+password file protection, ownership and SELinux attirbutes.
+File privileges: chmod ug+rw .htpasswd
+File Onwership: chown apache.apache .htpasswd
+SELinux file attributes: chcon –R –h – u system_u –r object_r –t httpd_config_t .htpasswd
+Flexible password protection by group access permissions
+1.	Create a file .htgroup in that directory which contains the groupname and list of users.
+member-users: user1 user2 user3 … etc
+Where member-user is the name of the group
+
+2.	Modify .htaccess in the membersonly directory 
+AuthName “Add your Login message here”
+AuthType Basic
+AuthUserFile /home/domain/public_html/membersonly/.htpasswd
+AuthGroupFile /home/domain/public_html/membersonly/.htgroup
+require group member-users
+
+3.	Create password file .htpasswd for each user as above
+htpasswd –c /home/domain/public_html/membersonly/.htpasswd user1
+htpasswd /home/domain/public_html/membersonly/.htpasswd user2
+
+Restrict access based on domain or IP address
+Order deny, allow
+Deny from all
+Allow from allowable-domain.com
+Allow from xxx.xxx.xxx
+Deny from evil-domain.com
+
+Placing Authentication directives in httpd.conf exclusively instead of using .htaccess
+The purpose of using “distriuted configuration file” .htaccess is so that users may control authentication. It can also be set in httpd.conf instead of .htaccess
+…
+…
+<Directory /home/domain/public_html/membersonly>
+Allowoverride AuthConfig
+AuthName “Add your login message here”
+AuthType Basic
+AuthUserFile /home/domain/public_html/membersonly/.htpasswd
+AuthGroupFile /dev/null
+require user name-of-user
+</Directory>
+Perl CGI Script to modify user passwords
+This allows users to manage/change their own passwords
+Use the Perl CGI script htpasswd.pl [cache]
+Edit location of Perl i.e.: /usr/bin/perl
+Edit the script to specify location of the password file i.e. /var/www/PasswordDir/.htpasswd
+The password file must be located in a directory where CGI is allowed to modify files.
+httpd.conf 
+…
+…
+<Directory “/var/www/PasswordDir”>
+Options –Indexes
+AllowOverride None
+Options None
+Order allow, deny
+Allow from all
+</Directory>
+…
+…
+Using Digest file for Apache Authentication
+This method authenticates a user login using Apache 2.0 on Linux. The logins have no connections to user accounts.
+<Location /home/domain/public_html/membersonly>
+AuthType Digest
+AuthName “Members only area”
+AuthDigestDomain /home/domain/public_html/membersonly
+AuthDigestFile /etc/httpd/conf/digestpw
+require valid-user
+</Location>
+
+Using LDAP for Apache Authentication
+This authenticates using Apache 2.0/2.2 and the LDAP authentication modules on Linux and an LDAP server.
+Apache LDAP modules:
+LDAP modules should be enabled
+Apache 2.0: mod_ldap, mod_auth_ldap
+Apache 2.2: mod_ldap, mod_authnz_ldap
+
+/etc/httpd/conf/httpd.conf
+
+Apache 2.0
+LoadModule ldap_module modules/mod_ldap.so
+LoadModule auth_ldap_module modules/mod_auth_ldap.so
+
+Apache 2.2
+LoadModule ldap_module modules/mod_ldap.so
+LoadModule authnz_ldap_module modules/mod_authnz_ldap.so
+
+Apache Authentication Configuration
+Apache 2.0
+Authenticate to an Open LDAP server
+httpd.conf
+…
+…
+<Directory /var/www/html>
+AuthType Basic
+AuthName “Stooges Web Site: Login with email”
+AuthLDAPURL ldap://ldap.yolinux.com:389/o=stooges?mail
+require valid-user
+</Directiry>
+
+Or create the file /var/www/html/.htaccess
+AuthName “Stooges Web Site: Login with email”
+AuthType Basic
+AuthLDAPURL ldap://ldap.your-domain.com:389/o=stooges?mail
+require valids-user
+
+Bind with a bind DN: (Password protected LDAP repository)
+httpd.conf
+…
+…
+<Directory /var/www/html>
+AuthType Basic
+AuthName “Stooges Web Site: Login with email”
+AuthLDAPEnabled on
+AuthLDAPURL ldap://ldap.your-domain.com:389/o=stooges?mail
+AuthLDAPBindDN “cn=StoogeAdmin, o=stooges”
+AuthLDAPBindPassword Secret1
+require valid-user
+</Directory>
+…
+…
+Examples:
+Require valid-user: Allow all users if authentication is correct.
+Require user greg phil bob: Allow only greg phil bob to login.
+Require group accounting: Allow only users in group “accounting” to authenticate.
+
+Apache 2.2
+Authenticate using Apache httpd 2.2 AuthzLDAP:
+User authentication:
+File httpd.conf
+..
+…
+<Directory /var/www/html>
+	AuthType Basic
+	AuthName “Stooges Web Site: Login with user id”
+	AuthBasicProvider ldap
+	AuthLDAPAuthoritative on
+	AuthLDAPURL ldap://ldap.your-domain.com:389/o=stooges?uid?sub
+	AuthLDAPBindDN “cn=StoogeAdmin,o=stooges”
+	AuthLDAPBindPAssword secret1
+	Require ldap-user lary curley moe joe bob mary
+</Directory>
+…
+..
+There are two configurations for the directive AuthzLDAPAuthoritative
+AuthzLDAPAuthoritative on (default)
+…
+Require ldap-user lary curley moe joe bob mary
+AuthzLDAPAuthoritative off
+…
+Require valid-user
+
+Group Authentication:
+LDAP LDIF file:
+dn: cn=users,ou=group,o=stooges
+cn: users
+objectClass: top
+objectClass: posixGroup
+gidNumber: 100
+memberUid: larry
+memberUid: moe
+
+Apache configuration:
+…
+<Directory /var/www/html>
+	Order deny,allow
+	Deny from All
+	AuthType Basic
+	AuthName “Stooges Web Site: Login with user id”
+	AuthBasicProvider ldap
+	AuthzLDAPAuthoritative on
+	AuthLDAPURL ldap://ldap.your-domain.com:389/o=stooges?uid?su
+	AuthLDAPBindDN “cn=StoogeAdmin,o=stooges”
+	AuthLDAPBindPassword secret1
+	AuthLDAPGroupAttribute memberUid
+	AuthLDAPGroupAttributeIsDN off
+	Require ldap-group cn=users,ou=group,o=stooges
+	Require ldap-attribute gidNumber=100
+	Satisfy any
+</Directory>
+…
+
+
+Using NIS for Apache Authentication:
+This method authenticates using Apache on Linux and an NIS server.
+
+Using a MySQL database for Apache Authentication:
+SSL CONFIGURATION
+SSL Process works as follows:
+1.	Client connects to web server and gives a list of available ciphers.
+2.	Server picks the strongest cipher that both it and the client support, and sends back a certificate with its name and public encryption key, signed by a trusted Certificate Authority.
+3.	The client checks the certificate with the CA.
+4.	The client sends back a random number encrypted with the servers’ public key. Only the client knows the number, and only the server can decrypt it (using its private key).
+5.	Server and client use this random number to generate key material for the rest of the transaction.
+Getting required software:
+OpenSSL and mod_ssl
+Yum install mod_ssl openssl
+
+Generate a self-signed certificate
+Using OpenSSL we will generate a self-signed certificate. For production server you may want a key from Trusted Certificate Authority.
+#Generate private key
+Openssl genrsa –out ca.key 2048
+#Generate CSR
+Openssl req –new –key ca.key –out ca.csr
+#Generate Self Signed Key
+Openssl x509 –req –days 365 –in ca.csr –signkey ca.key –out ca.crt
+
+#Copy the files to the correct locations
+Cp ca.crt /etc/pki/tls/certs
+Cp ca.key /etc/pki/tls/private/ca.key
+Cp ca.csr /etc/pki/tls/private/ca.csr
+(restorecon –RvF /etc/pki)
+
+Update apache SSL configuration file
+Vi +/SSLCertificateFile /etc/httpd.conf/ssl.conf
+
+Change paths to match where the key file is stored.
+SSLCertificatesFile /etc/pki/tls/certs/ca.crt
+
+Then set the correct path for the Certificate Key File a few lines below.
+SSLCertificateKeyFile /etc/pki/tls/private/ca.key
+
+Quit and save the file and then restart apache
+/etc/init.d/httpd restart
+Setting up the virtual hosts
+Just as you set VirtualHosts for http on port 80 you do for https on port 443.
+<virtualHost *:80>
+	<Directory /var/www/vhosts/yoursite.com.httpdocs>
+	AllowOverride All
+	</Directory>
+	DocumentRoot /var/www/vhosts/yoursite.com/httpdocs
+	ServerName yoursite.com
+</VirtualHost>
+
+To add a sister site on port 443
+NameVirtualHost *:443
+<VirtualHost *:443>
+	SSLEngine on
+	SSLCertificateFIle /etc/pki/tls/certs/ca.crt
+	SSLCertificareKeyFile /etc/pki/tls/private/ca.key
+	<Directory /var/www/vhosts/yoursite.com/httpsdocs>
+	AllowOverride All
+	DocumentRoot /var/www/vhosts/yoursite.com/httpsdocs
+	ServerName yoursite.com
+</VirtualHost>
+
+Restart Apache
+
+Configuring the firewall
+iptables –A INPUT –p tcp - -dport 443 –j ACCEPT
+/sbin/service iptables save
+iptables –L –v
+
+Troubleshooting
+Check server is actually running ps -ef |grep apache
+Check permission on your key and certificate files are set correctly, as well as permissions on your test HTML file and its parent directory.
+Check the logs, main server logs nad SSL logs. Change LogLevel value in config file to ‘debug’ and test again.
+If the problem is the SSL connection, a useful tool is s_client, which is a diagnostic tool for troubleshooting TLS/SSL connections.
+/usr/bin/openssl s_client –connect http://443
+
