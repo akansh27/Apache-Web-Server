@@ -131,7 +131,7 @@ Root of Apache’s config directory at /etc/httpd/ with inside conf, conf.d, log
 Conf directory holds the main apache configuration. Inside it’ll contain httpd.conf, magic and custom.
 
 ### httpd.conf
-````
+```
 /etc/httpd/conf/httpd.conf 
 ```
 This is the first configuration file apache will read, and it contains most of the settings for apache by default.
