@@ -23,4 +23,87 @@ Apache played a key role in the initial growth of the World Wide Web growing as 
 
 As of July 2016, Apache remained the most widely used web server software, estimated to serve 46% of all active websites and 43% of the top million websites.
 
+## Features
+* Supports variety of features, many implemented as compiled modules which extend the core functionality.
+* Server side programming language support – perl, python, Tcl, PHP.
+* Authentication modules include mode_access, mod_auth, mod_digest, mod_gzip.
+* SSL and TSL support (mod_ssl), proxy module (mod_proxy), URL rewriter (mod_rewrite), custom log file (mod_log_config), and filtering support (mod_include and mod_ext_filter)
+* Compression method includes external extension module mod_gzip.
+* ModSecurity is an open source intrusion detection and prevention engine for Web applications.
+*Apache logs can be analyzed through web browser using free scripts such as AWStats/W3Perl or Visitors.
+* Allows virtual hosting.
+* Features configurable error messages, DBMS based authentication databases, and content negotiation.
+* Supported by several GUIs.
+* Supports password authentication and digital certificate authentication.
+* Apache provides variety of multiprocessing modules (MPMs) which allows Apache to run in a process-based, hybrid (process and thread), or event-hybrid mode to better match the demands of each particular infrastructure.
+
 ## Important topics in Apache web server
+### Installation
+### Deployment
+###
+
+## Installation
+Apache httpd uses libtools and autoconf to create a build environment that looks like many other Open source projects.
+Requirements
+APR and APR-Util
+APR and APR-Util must be installed prior to building Apache httpd. Download latest versions of both unpack them into ./srclib/apr and ./srclib/apr-util and use ./configure - -with-included-apr option.
+Perl-Compatible Regular Expressions Library (PCRE)
+This library is required but no longer bundled with httpd. Download the source code, or install a Port or Package.
+Disk Space
+50 MB of temporary free disk space. After installation server occupies 10 MB of disk space.
+ANSI-C Compiler and Build System
+GNU C Compiler (GCC) from Free Software Foundation is recommended.
+Accurate time keeping
+ntpdate or xntpd programs are used which are based on NTP.
+Perl 5 (Optional)
+For some of the scripts like apxs or dbmmanage (which are written in Perl) the Perl 5 interpreter is required
+Download
+```
+Lynx httpd:/httpd.apache.org/download.cgi
+```
+After downloading verify the version by testing the downloaded tarball against the PGP signature.
+Extract
+Uncompress and untar
+```
+gzip –d httpd-NN.tar.gz
+tar xvf httpd-NN.tar
+```
+This will create a new directory under the current directory containing source code for distribution. Cd into the directory before proceeding with compiling the server.
+Configuring Source Tree
+Configuring the Apache source tree for the particular platform and personal requirement. This is done using the script configure included in the root directory of the distribution. To configure source tree using all the default options ./configure. To change the default options, configure accepts a variety of variables and command line options.
+- - prefix – location where Apache is to be installed.
+Also at this point, you can specify which features you want included in Apache by enabling or disabling modules. The modules are compiled as dynamic shared objects (DSO) which can be loaded or unloaded at runtime. Can also choose to compile modules statically by using the option - - enable-module=static
+e.g. $ CC=”pgcc’ CFLAGS=”-O2” \
+```
+./configure - -prefix=/sw/pkg/apache 
+- -enable-ldap=shared 
+- -enable-lua=shared
+```
+Build
+Build the various parts which form the Apache package by running $ make, this will require root privileges.
+Customize
+By editing configuration files under PREFIX/conf/.
+```
+$ vi PREFIX/conf/httpd.conf
+```
+Test
+```
+$ PREFIX/bin/apachectl –k start
+```
+You should be able to request your first document via the URL http://localhost/. The web page you see is located under the DocumentRoot which will usually be PREFIX/hdocs/.
+```
+$ PREFIX/bin/apachectl –k stop
+```
+Upgrading
+The make install process will not overwrite any of the existing documents, log files, or configuration files. To upgrade across minor versions, start by finding the file config.nice in the build directory of the installed server or at the root of the source tree for your old install. This will contain the exact configure command line that you used to configure the source tree. Then to upgrade from one version to next, copy the config.nice file to the source tree of the new version, edit it to make the desired changes and then run.
+```
+$ ./config.nice
+$ make
+$ make install
+$ PREFIX/bin/apachectl –k graceful –stop
+$PREFIX/bin/apachectl –k start
+```
+Can pass additional arguments to config.nice, which will be appended to the original configure options.
+```
+$ ./config.nice - -prefix=/home/test/apache - -with-port=90
+```
