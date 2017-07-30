@@ -169,107 +169,7 @@ Symlink to /var/run/httpd. This directory holds only one file, and it should be 
 
 ### /etc/sysconfig
 
-## VIRTUAL HOSTING
-Virtual host refers to practice of running more than one website on a single machine.
-Two types, IP-based (different IP for every web site) and name-based (multiple names running on each IP address)
 
-### Setup Name Based Virtual Host
-Create directory where you want to keep all your website’s files, under /var/www/html/. /var/www/html will be the default Document Root in Apache virtual configuration.
-
-```
-mkdir /var/www/html/example1.com/, mkdir /var/www/html/example2.com/
-```
-
-To set up Name based virtual hosting you need to tell Apache which IP you will be using to receive Apache requests for all the websites or domain names. Using NameVirtualHost directive in main configuration file.
-
-```
-vi /etc/httpd/conf/httpd.conf
-```
-```
-NameVirtualHost 192.168.0.100:80
-```
-
-Add VirtualHost directives
-```
-<VirtualHost 192.168.0.100:80>
-	ServerAdmin webmaster@example1.com
-	DocumentRoot /var/www/html/example1.com
-	ServerName www.example1.com
-	ServerAlias 
-ErrorLog logs/www.example1.com-error_log
-	CustomLog logs/www.example1.com-access_log common
-</VirtualHost>
-
-<VirtualHost *:80>
-	ServerAdmin webmaster@example2.com
-	DocumentRoot /var/www/html/example2.com
-	ServerName www.example2.com
-	ErrorLog logs/www.example2.com-error_log
-	CustomLog logs/www.example2.com-access_log common
-</VirtualHost>
-```
-
-Check the syntax
-```
-httpd –t
-```
-
-Create a test page called index.html and add some content to the file.
-```
-vi /var/www/html/example1.com/index.html
-```
-```
-<html>
-     <head>
-	<title>
-	  www.example1.com
-	</title>
-     </head>
-     <body>
-                  <h1> Hello, Welcome to www.example1.com. </h1>
-      </body>
-</hmtl>
-```
-Similarly for example2.com and test the setup by accessing both the domains in a browser.
-
-http://www.example1.com
-http://www.example2.com
-
-### Setup IP based Virtual Hosting
-Must have more than one IP address/Port assigned to the server. It can be on a single NIC card (eg, eth0:1, eth0:2…) Multiple NIC cards can also be attached.
-* Create Multiple IP Addresses on a Single Network Interface.
-Purpose of implementing IP based virtual Hosting is to assign IP for each domain and that particular IP will not be used by any other domain.
-This kind of set up is required when a website is running with SSL certificate or on different ports and IPs. And you can also run multiple instances of Apache on a single machine.
-```
-ifconfig
-eth0 192.168.0.100
-eth0:1 192.168.0.101
-```
-
-To assign a specific IP/Port to receive http requests, change the Listen directive in httpd.conf file.
-```
-vi /etc/httpd/conf/httpd.conf
-# Listen 80
-Listen 192.168.0.100:80
-```
-Create virtual host sections for both the domains.
-```
-<VirtualHost 192.168.0.100:80>
-	ServerAdmin webmaster@example1.com
-	DocumentRoot /var/www/html/example1.com
-	ServerName www.example1.com
-	ErrorLog logs/www.example1.com-error_log
-	CustomLog logs/www.example1.com-access_log common
-</VirtualHost>
-
-<VirtualHost 192.168.0.101:80>
-	ServerAdmin webmaster@example2.com
-	DocumentRoot /var/www/html/example2.com
-	ServerName www.example2.com
-	ErrorLog logs/www.example2.com-error_log
-	CustomLog logs/www.example2.com-access_log common
-</VirtualHost>
-```
 ## AUTHENTICATION
 Apache authentication can be configured to require web site visitors to login with a user id and password. The login dialog box which requests the user id and password is provided by the web browser at the request of Apache. Apache allows the configuration to be entered in it’s configuration files (i.e. main configuration file /etc/httpd/conf/httpd.conf, supplementary configuration files /etc/httpd/conf.d/component.conf or in a file which resides with in the directory to be password protected.
 
@@ -601,3 +501,115 @@ ps -ef |grep httpd
 ```
 /usr/bin/openssl s_client –connect http://443
 ```
+
+## VIRTUAL HOSTING
+Virtual host refers to practice of running more than one website on a single machine.
+Two types, IP-based (different IP for every web site) and name-based (multiple names running on each IP address)
+
+### Setup Name Based Virtual Host
+Create directory where you want to keep all your website’s files, under /var/www/html/. /var/www/html will be the default Document Root in Apache virtual configuration.
+
+```
+mkdir /var/www/html/example1.com/, mkdir /var/www/html/example2.com/
+```
+
+To set up Name based virtual hosting you need to tell Apache which IP you will be using to receive Apache requests for all the websites or domain names. Using NameVirtualHost directive in main configuration file.
+
+```
+vi /etc/httpd/conf/httpd.conf
+```
+```
+NameVirtualHost 192.168.0.100:80
+```
+
+Add VirtualHost directives
+```
+<VirtualHost 192.168.0.100:80>
+	ServerAdmin webmaster@example1.com
+	DocumentRoot /var/www/html/example1.com
+	ServerName www.example1.com
+	ServerAlias 
+ErrorLog logs/www.example1.com-error_log
+	CustomLog logs/www.example1.com-access_log common
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerAdmin webmaster@example2.com
+	DocumentRoot /var/www/html/example2.com
+	ServerName www.example2.com
+	ErrorLog logs/www.example2.com-error_log
+	CustomLog logs/www.example2.com-access_log common
+</VirtualHost>
+```
+
+Check the syntax
+```
+httpd –t
+```
+
+Create a test page called index.html and add some content to the file.
+```
+vi /var/www/html/example1.com/index.html
+```
+```
+<html>
+     <head>
+	<title>
+	  www.example1.com
+	</title>
+     </head>
+     <body>
+                  <h1> Hello, Welcome to www.example1.com. </h1>
+      </body>
+</hmtl>
+```
+Similarly for example2.com and test the setup by accessing both the domains in a browser.
+
+http://www.example1.com
+http://www.example2.com
+
+### Setup IP based Virtual Hosting
+Must have more than one IP address/Port assigned to the server. It can be on a single NIC card (eg, eth0:1, eth0:2…) Multiple NIC cards can also be attached.
+* Create Multiple IP Addresses on a Single Network Interface.
+Purpose of implementing IP based virtual Hosting is to assign IP for each domain and that particular IP will not be used by any other domain.
+This kind of set up is required when a website is running with SSL certificate or on different ports and IPs. And you can also run multiple instances of Apache on a single machine.
+```
+ifconfig
+eth0 192.168.0.100
+eth0:1 192.168.0.101
+```
+
+To assign a specific IP/Port to receive http requests, change the Listen directive in httpd.conf file.
+```
+vi /etc/httpd/conf/httpd.conf
+# Listen 80
+Listen 192.168.0.100:80
+```
+Create virtual host sections for both the domains.
+```
+<VirtualHost 192.168.0.100:80>
+	ServerAdmin webmaster@example1.com
+	DocumentRoot /var/www/html/example1.com
+	ServerName www.example1.com
+	ErrorLog logs/www.example1.com-error_log
+	CustomLog logs/www.example1.com-access_log common
+</VirtualHost>
+
+<VirtualHost 192.168.0.101:80>
+	ServerAdmin webmaster@example2.com
+	DocumentRoot /var/www/html/example2.com
+	ServerName www.example2.com
+	ErrorLog logs/www.example2.com-error_log
+	CustomLog logs/www.example2.com-access_log common
+</VirtualHost>
+```
+
+## PLUG-IN
+
+The Apache HTTP Server Plug-In proxies requests from an Apache HTTP Server to a WebLogic Server cluster or instance. The plug-in enhances an Apache installation by enabling WebLogic Server to handle load-balancing or requests that require the dynamic functionality of WebLogic Server. You target a WebLogic Server instance using the WebLogicHost and WebLogicPort parameters in the plug-in configuration file. You target a WebLogic Server cluster or group of non-clustered servers using the WebLogicCluster parameter.
+
+The plug-in is intended for use in an environment where an Apache Server serves static pages, and another part of the document tree (dynamic pages best generated by HTTP Servlets or JavaServer Pages) is delegated to WebLogic Server, which may be operating in a different process, possibly on a different host. To the end user—the browser—the HTTP requests delegated to WebLogic Server still appear to be coming from the same source.
+
+HTTP-tunneling, a technique that gives HTTP requests and responses access through a company's firewall, can operate through the plug-in.
+The Apache HTTP Server Plug-In operates as an Apache module within an Apache HTTP Server. An Apache module is loaded by Apache Server at startup, and then certain HTTP requests are delegated to it. Apache modules are similar to HTTP servlets, except that an Apache module is written in code native to the platform.
+
