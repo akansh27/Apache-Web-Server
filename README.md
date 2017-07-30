@@ -312,46 +312,60 @@ AccessFileName .htaccess
 ```
 ### Password protection by single login
 
-1.	Create the directory you want to password protect.
-2.	Create file /home/domain/public_html/membersonly/.htaccess in that directory that looks something like:
+1. Create the directory you want to password protect.
+2. Create file /home/domain/public_html/membersonly/.htaccess in that directory that looks something like:
+```
 AuthName “Add your Login message here”
 AuthType Basic
 AuthUserFile /home/domain/public_html/membersonly/.htpasswd
 AuthGroupFile /dev/null
 Require user name-of-user
-3.	Create the password file /home/domain/public_html/membersonly/.htpasswd
+```
+3. Create the password file /home/domain/public_html/membersonly/.htpasswd
+```
 htpasswd –c .htpasswd name-of-user
+```
 Add a new user to the existing password file:
+```
 htpasswd .htpasswd name-of-user
-password file protection, ownership and SELinux attirbutes.
+```
+Password file protection, ownership and SELinux attirbutes.
+```
 File privileges: chmod ug+rw .htpasswd
 File Onwership: chown apache.apache .htpasswd
 SELinux file attributes: chcon –R –h – u system_u –r object_r –t httpd_config_t .htpasswd
+```
 Flexible password protection by group access permissions
-1.	Create a file .htgroup in that directory which contains the groupname and list of users.
+1. Create a file .htgroup in that directory which contains the groupname and list of users.
+```
 member-users: user1 user2 user3 … etc
+```
 Where member-user is the name of the group
 
-2.	Modify .htaccess in the membersonly directory 
+2. Modify .htaccess in the membersonly directory 
+```
 AuthName “Add your Login message here”
 AuthType Basic
 AuthUserFile /home/domain/public_html/membersonly/.htpasswd
 AuthGroupFile /home/domain/public_html/membersonly/.htgroup
 require group member-users
-
-3.	Create password file .htpasswd for each user as above
+```
+3. Create password file .htpasswd for each user as above
+```
 htpasswd –c /home/domain/public_html/membersonly/.htpasswd user1
 htpasswd /home/domain/public_html/membersonly/.htpasswd user2
-
-Restrict access based on domain or IP address
+```
+### Restrict access based on domain or IP address
+```
 Order deny, allow
 Deny from all
 Allow from allowable-domain.com
 Allow from xxx.xxx.xxx
 Deny from evil-domain.com
-
-Placing Authentication directives in httpd.conf exclusively instead of using .htaccess
+```
+### Placing Authentication directives in httpd.conf exclusively instead of using .htaccess
 The purpose of using “distriuted configuration file” .htaccess is so that users may control authentication. It can also be set in httpd.conf instead of .htaccess
+```
 …
 …
 <Directory /home/domain/public_html/membersonly>
@@ -362,55 +376,34 @@ AuthUserFile /home/domain/public_html/membersonly/.htpasswd
 AuthGroupFile /dev/null
 require user name-of-user
 </Directory>
-Perl CGI Script to modify user passwords
-This allows users to manage/change their own passwords
-Use the Perl CGI script htpasswd.pl [cache]
-Edit location of Perl i.e.: /usr/bin/perl
-Edit the script to specify location of the password file i.e. /var/www/PasswordDir/.htpasswd
-The password file must be located in a directory where CGI is allowed to modify files.
-httpd.conf 
-…
-…
-<Directory “/var/www/PasswordDir”>
-Options –Indexes
-AllowOverride None
-Options None
-Order allow, deny
-Allow from all
-</Directory>
-…
-…
-Using Digest file for Apache Authentication
-This method authenticates a user login using Apache 2.0 on Linux. The logins have no connections to user accounts.
-<Location /home/domain/public_html/membersonly>
-AuthType Digest
-AuthName “Members only area”
-AuthDigestDomain /home/domain/public_html/membersonly
-AuthDigestFile /etc/httpd/conf/digestpw
-require valid-user
-</Location>
+```
 
-Using LDAP for Apache Authentication
+### Using LDAP for Apache Authentication
 This authenticates using Apache 2.0/2.2 and the LDAP authentication modules on Linux and an LDAP server.
-Apache LDAP modules:
+
+#### Apache LDAP modules:
 LDAP modules should be enabled
+```
 Apache 2.0: mod_ldap, mod_auth_ldap
 Apache 2.2: mod_ldap, mod_authnz_ldap
-
+```
 /etc/httpd/conf/httpd.conf
 
 Apache 2.0
+```
 LoadModule ldap_module modules/mod_ldap.so
 LoadModule auth_ldap_module modules/mod_auth_ldap.so
-
+```
 Apache 2.2
+```
 LoadModule ldap_module modules/mod_ldap.so
 LoadModule authnz_ldap_module modules/mod_authnz_ldap.so
-
+```
 Apache Authentication Configuration
 Apache 2.0
 Authenticate to an Open LDAP server
 httpd.conf
+```
 …
 …
 <Directory /var/www/html>
@@ -421,13 +414,16 @@ require valid-user
 </Directiry>
 
 Or create the file /var/www/html/.htaccess
+
+```
 AuthName “Stooges Web Site: Login with email”
 AuthType Basic
 AuthLDAPURL ldap://ldap.your-domain.com:389/o=stooges?mail
 require valids-user
-
+```
 Bind with a bind DN: (Password protected LDAP repository)
 httpd.conf
+```
 …
 …
 <Directory /var/www/html>
@@ -441,6 +437,7 @@ require valid-user
 </Directory>
 …
 …
+```
 Examples:
 Require valid-user: Allow all users if authentication is correct.
 Require user greg phil bob: Allow only greg phil bob to login.
@@ -450,7 +447,8 @@ Apache 2.2
 Authenticate using Apache httpd 2.2 AuthzLDAP:
 User authentication:
 File httpd.conf
-..
+```
+...
 …
 <Directory /var/www/html>
 	AuthType Basic
@@ -464,13 +462,17 @@ File httpd.conf
 </Directory>
 …
 ..
+```
+
 There are two configurations for the directive AuthzLDAPAuthoritative
 AuthzLDAPAuthoritative on (default)
+```
 …
 Require ldap-user lary curley moe joe bob mary
 AuthzLDAPAuthoritative off
 …
 Require valid-user
+```
 
 Group Authentication:
 LDAP LDIF file:
@@ -483,6 +485,7 @@ memberUid: larry
 memberUid: moe
 
 Apache configuration:
+```
 …
 <Directory /var/www/html>
 	Order deny,allow
@@ -501,51 +504,58 @@ Apache configuration:
 	Satisfy any
 </Directory>
 …
+```
+## SSL CONFIGURATION
+* SSL Process works as follows:
+1. Client connects to web server and gives a list of available ciphers.
+2. Server picks the strongest cipher that both it and the client support, and sends back a certificate with its name and public encryption key, signed by a trusted Certificate Authority.
+3. The client checks the certificate with the CA.
+4. The client sends back a random number encrypted with the servers’ public key. Only the client knows the number, and only the server can decrypt it (using its private key).
+5. Server and client use this random number to generate key material for the rest of the transaction.
 
-
-Using NIS for Apache Authentication:
-This method authenticates using Apache on Linux and an NIS server.
-
-Using a MySQL database for Apache Authentication:
-SSL CONFIGURATION
-SSL Process works as follows:
-1.	Client connects to web server and gives a list of available ciphers.
-2.	Server picks the strongest cipher that both it and the client support, and sends back a certificate with its name and public encryption key, signed by a trusted Certificate Authority.
-3.	The client checks the certificate with the CA.
-4.	The client sends back a random number encrypted with the servers’ public key. Only the client knows the number, and only the server can decrypt it (using its private key).
-5.	Server and client use this random number to generate key material for the rest of the transaction.
-Getting required software:
+* Getting required software:
 OpenSSL and mod_ssl
 Yum install mod_ssl openssl
 
-Generate a self-signed certificate
+* Generate a self-signed certificate
 Using OpenSSL we will generate a self-signed certificate. For production server you may want a key from Trusted Certificate Authority.
-#Generate private key
-Openssl genrsa –out ca.key 2048
-#Generate CSR
-Openssl req –new –key ca.key –out ca.csr
-#Generate Self Signed Key
-Openssl x509 –req –days 365 –in ca.csr –signkey ca.key –out ca.crt
-
-#Copy the files to the correct locations
-Cp ca.crt /etc/pki/tls/certs
-Cp ca.key /etc/pki/tls/private/ca.key
-Cp ca.csr /etc/pki/tls/private/ca.csr
+* Generate private key
+``` openssl genrsa –out ca.key 2048
+```
+* Generate CSR
+```
+openssl req –new –key ca.key –out ca.csr
+```
+* Generate Self Signed Key
+```
+openssl x509 –req –days 365 –in ca.csr –signkey ca.key –out ca.crt
+```
+* Copy the files to the correct locations
+```
+cp ca.crt /etc/pki/tls/certs
+cp ca.key /etc/pki/tls/private/ca.key
+cp ca.csr /etc/pki/tls/private/ca.csr
 (restorecon –RvF /etc/pki)
-
-Update apache SSL configuration file
-Vi +/SSLCertificateFile /etc/httpd.conf/ssl.conf
-
-Change paths to match where the key file is stored.
+```
+* Update apache SSL configuration file
+```
+vi +/SSLCertificateFile /etc/httpd.conf/ssl.conf
+```
+* Change paths to match where the key file is stored.
+```
 SSLCertificatesFile /etc/pki/tls/certs/ca.crt
-
-Then set the correct path for the Certificate Key File a few lines below.
+```
+* Then set the correct path for the Certificate Key File a few lines below.
+```
 SSLCertificateKeyFile /etc/pki/tls/private/ca.key
-
-Quit and save the file and then restart apache
+```
+* Quit and save the file and then restart apache
+```
 /etc/init.d/httpd restart
-Setting up the virtual hosts
+```
+### Setting up the virtual hosts
 Just as you set VirtualHosts for http on port 80 you do for https on port 443.
+```
 <virtualHost *:80>
 	<Directory /var/www/vhosts/yoursite.com.httpdocs>
 	AllowOverride All
@@ -553,8 +563,9 @@ Just as you set VirtualHosts for http on port 80 you do for https on port 443.
 	DocumentRoot /var/www/vhosts/yoursite.com/httpdocs
 	ServerName yoursite.com
 </VirtualHost>
-
+```
 To add a sister site on port 443
+```
 NameVirtualHost *:443
 <VirtualHost *:443>
 	SSLEngine on
@@ -565,18 +576,24 @@ NameVirtualHost *:443
 	DocumentRoot /var/www/vhosts/yoursite.com/httpsdocs
 	ServerName yoursite.com
 </VirtualHost>
+```
+* Restart Apache
 
-Restart Apache
-
-Configuring the firewall
+* Configuring the firewall
+```
 iptables –A INPUT –p tcp - -dport 443 –j ACCEPT
 /sbin/service iptables save
 iptables –L –v
-
-Troubleshooting
-Check server is actually running ps -ef |grep apache
-Check permission on your key and certificate files are set correctly, as well as permissions on your test HTML file and its parent directory.
-Check the logs, main server logs nad SSL logs. Change LogLevel value in config file to ‘debug’ and test again.
-If the problem is the SSL connection, a useful tool is s_client, which is a diagnostic tool for troubleshooting TLS/SSL connections.
+```
+### Troubleshooting
+* Check server is actually running 
+```
+ps -ef |grep apache
+ps -ef |grep httpd
+```
+* Check permission on your key and certificate files are set correctly, as well as permissions on your test HTML file and its parent directory.
+* Check the logs, main server logs nad SSL logs. Change LogLevel value in config file to ‘debug’ and test again.
+* If the problem is the SSL connection, a useful tool is s_client, which is a diagnostic tool for troubleshooting TLS/SSL connections.
+```
 /usr/bin/openssl s_client –connect http://443
-
+```
