@@ -415,7 +415,7 @@ require valid-user
 
 Or create the file /var/www/html/.htaccess
 
-```
+
 AuthName “Stooges Web Site: Login with email”
 AuthType Basic
 AuthLDAPURL ldap://ldap.your-domain.com:389/o=stooges?mail
