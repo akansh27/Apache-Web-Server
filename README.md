@@ -514,13 +514,17 @@ Apache configuration:
 5. Server and client use this random number to generate key material for the rest of the transaction.
 
 * Getting required software:
-OpenSSL and mod_ssl
-Yum install mod_ssl openssl
-
+```
+openSSL and mod_ssl
+yum install mod_ssl openssl
+```
 * Generate a self-signed certificate
+
 Using OpenSSL we will generate a self-signed certificate. For production server you may want a key from Trusted Certificate Authority.
+
 * Generate private key
-``` openssl genrsa –out ca.key 2048
+``` 
+openssl genrsa –out ca.key 2048
 ```
 * Generate CSR
 ```
