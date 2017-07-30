@@ -547,7 +547,7 @@ vi +/SSLCertificateFile /etc/httpd.conf/ssl.conf
 ```
 * Change paths to match where the key file is stored.
 ```
-SSLCertificatesFile /etc/pki/tls/certs/ca.crt
+SSLCertificateFile /etc/pki/tls/certs/ca.crt
 ```
 * Then set the correct path for the Certificate Key File a few lines below.
 ```
@@ -596,7 +596,7 @@ ps -ef |grep apache
 ps -ef |grep httpd
 ```
 * Check permission on your key and certificate files are set correctly, as well as permissions on your test HTML file and its parent directory.
-* Check the logs, main server logs nad SSL logs. Change LogLevel value in config file to ‘debug’ and test again.
+* Check the logs, main server logs and SSL logs. Change LogLevel value in config file to ‘debug’ and test again.
 * If the problem is the SSL connection, a useful tool is s_client, which is a diagnostic tool for troubleshooting TLS/SSL connections.
 ```
 /usr/bin/openssl s_client –connect http://443
