@@ -622,7 +622,7 @@ The following general default configuration directives are specified in absence 
 Log level directive: This specifies log message severity. Default is “warn.”
 
 ``` 
-&ast&astLogLevel warn&ast&ast
+LogLevel warn
 ```
 Table of Level Severities
 
@@ -637,3 +637,47 @@ Table of Level Severities
 |info	   | Informational	              | “Server seems busy…”|
 |debug	   | Debug-level messages	      | “opening config file …”|
 |trace1-8  | Trace messages	              | “proxy: FTP: … ”|
+
+### Log Format Notes:	
+These default directives can be thought of as a recipe of formatting assigned to a nickname and used with a CustomLog directive. The format string represents a number of specifiers preceded with a “%” and the specifier character.
+
+A specifier represented as %{Referrer}i means a variable value of type “i,” which in this case means the “Referrer” request header content. The “i” specifies content from the request header.
+
+The “vhost_combined” following the format string, indicated in the example below, is just a name assigned to the format. Apache calls these “nicknames.” Their use with a CustomLog directive is like this: CustomLog <path/to/log> <nickname>. This will log the format represented by the nickname to the specified log location.
+
+Example:
+```
+LogFormat "%v:%p %h %l %u %t "%r" %>s %O "%{Referer}i" "%{User-Agent}i"" vhost_combined
+```
+**Combined access log config**
+
+Default vhost combined access log config allows for a combined access log for those vhosts without specific location config. Change this config if a new location is desired.
+
+Example:
+```
+CustomLog ${APACHE_LOG_DIR}/other_vhosts_access.log vhost_combined. 
+```
+The “vhost_combined” above is a label or name for a specific format.
+
+### Access and Error Logs
+
+Log Files
+
+An Apache log is a record of the events that have occurred on your Apache web server. Apache stores two kinds of logs:
+
+1) The access log contains information about requests coming in to the web server. This information can include what pages people are viewing, the success status of requests, and how long the request took to respond. It looks something like this:
+```
+10.185.248.71 - - [09/Jan/2015:19:12:06 +0000] 808840 "GET /inventoryService/inventory/purchaseItem?userId=20253471&itemId=23434300 HTTP/1.1" 500 17 "-" "Apache-HttpClient/4.2.6 (java 1.5)"
+```
+2) The error log contains information about errors that the web server encountered when processing requests, such as when files are missing. It looks something like this:
+```
+[Thu Mar 13 19:04:13 2014] [error] [client 50.0.134.125] File does not exist: /var/www/favicon.ico
+```
+### Location
+Access and error log files are stored on individual web servers. The exact location of your Apache logs depends on your operating system:
+
+| OS	            | Access Log Location	  | Error Log Location |
+| ----------------- | --------------------------- | ------------------ |
+| Ubuntu and Debian | /var/log/apache2/access.log | /var/log/apache2/error.log |
+| RHEL and CentOS   | /var/log/httpd/access_log	  | /var/log/httpd/error_log |
+
