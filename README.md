@@ -622,7 +622,7 @@ The following general default configuration directives are specified in absence 
 Log level directive: This specifies log message severity. Default is “warn.”
 
 ``` 
-**LogLevel warn**
+&ast&astLogLevel warn&ast&ast
 ```
 Table of Level Severities
 
