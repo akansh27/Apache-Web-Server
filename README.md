@@ -681,3 +681,32 @@ Access and error log files are stored on individual web servers. The exact locat
 | Ubuntu and Debian | /var/log/apache2/access.log | /var/log/apache2/error.log |
 | RHEL and CentOS   | /var/log/httpd/access_log	  | /var/log/httpd/error_log |
 
+### Format
+Apache offers a ton of flexibility for what you can log. You can find a full description of the Apache log fields listed here in the Apache log documentation.
+```
+%a - RemoteIPOrHost
+%A - LocalIPOrHost
+%b or %B - Size
+%D - RequestTimeUs (microseconds)
+%h RemoteIPOrHost
+%k - KeepAliveRequests
+%l - RemoteLogname
+%r - Request
+%>s - HttpStatusCode
+%t - eventTime
+%T - RequestTimeSeconds
+%u - RemoteUser
+%U - UrlPath
+%v VirtualHost
+%X - ConnectionStatus
+%{Referer}i - Referer
+%{User-agent}i - UserAgent
+%{UNIQUE_ID}e - UniqueId
+%{X-Forwarded-For}i - XForwardedFor
+%{Host}i - Host
+```
+You can configure a custom pattern inside your apache configuration file, and then define where you want those logs to be written. Here is an example of one log format you can choose. You read more on the mod_log_config documentation.
+```
+LogFormat "%h %l %u %t "%r" %>s %b "%{Referer}i" "%{User-agent}i"" combined
+CustomLog log/access_log combined
+```
