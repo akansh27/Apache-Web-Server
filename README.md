@@ -613,3 +613,24 @@ The plug-in is intended for use in an environment where an Apache Server serves 
 HTTP-tunneling, a technique that gives HTTP requests and responses access through a company's firewall, can operate through the plug-in.
 The Apache HTTP Server Plug-In operates as an Apache module within an Apache HTTP Server. An Apache module is loaded by Apache Server at startup, and then certain HTTP requests are delegated to it. Apache modules are similar to HTTP servlets, except that an Apache module is written in code native to the platform.
 
+## LOGGING
+### General Configuration
+The following general default configuration directives are specified in absence of specific virtual host container configuration.
+
+**Default Logging Configuration**
+ 
+Log level directive: This specifies log message severity. Default is “warn.”
+``` LogLevel warn
+```
+Table of Level Severities
+| Severity | Description | Example |
+|----------|-------------|---------|
+|emergency | Emergencies — system is unusable |	“Child cannot open lock file. Exiting” |
+|alert	   | Immediate action required	      | “getpwuid: couldn’t determine user name from uid”|
+|crit	   | Critical conditions	      | “socket: Failed to get a socket, exiting child”|
+|error	   | Error conditions	              | “Premature end of script headers”|
+|warn	   | Warning conditions	              | “child process 1234 did not exit, sending another SIGHUP”|
+|notice	   | Normal but significant condition |	“httpd: caught SIGBUS, attempting to dump core in …”|
+|info	   | Informational	              | “Server seems busy…”|
+|debug	   | Debug-level messages	      | “opening config file …”|
+|trace1-8  | Trace messages	              | “proxy: FTP: … ”|
