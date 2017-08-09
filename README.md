@@ -620,11 +620,13 @@ The following general default configuration directives are specified in absence 
 **Default Logging Configuration**
  
 Log level directive: This specifies log message severity. Default is “warn.”
+
 ``` LogLevel warn
 ```
 Table of Level Severities
+
 | Severity | Description | Example |
-|----------|-------------|---------|
+| -------- | ----------- | ------- |
 |emergency | Emergencies — system is unusable |	“Child cannot open lock file. Exiting” |
 |alert	   | Immediate action required	      | “getpwuid: couldn’t determine user name from uid”|
 |crit	   | Critical conditions	      | “socket: Failed to get a socket, exiting child”|
