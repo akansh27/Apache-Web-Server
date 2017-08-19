@@ -62,7 +62,7 @@ As of July 2016, Apache remained the most widely used web server software, estim
 Apache httpd uses libtools and autoconf to create a build environment that looks like many other Open source projects.
 #### Requirements
 * APR and APR-Util
-APR and APR-Util must be installed prior to building Apache httpd. Download latest versions of both unpack them into ./srclib/apr and ./srclib/apr-util and use ./configure - -with-included-apr option.
+APR and APR-Util must be installed prior to building Apache httpd. Download latest versions of both unpack them into ./srclib/apr and ./srclib/apr-util and use ./configure --with-included-apr option.
 
 #### Perl-Compatible Regular Expressions Library (PCRE)
 This library is required but no longer bundled with httpd. Download the source code, or install a Port or Package.
@@ -95,13 +95,13 @@ This will create a new directory under the current directory containing source c
 
 #### Configuring Source Tree
 Configuring the Apache source tree for the particular platform and personal requirement. This is done using the script configure included in the root directory of the distribution. To configure source tree using all the default options ./configure. To change the default options, configure accepts a variety of variables and command line options.
-- - prefix – location where Apache is to be installed.
-Also at this point, you can specify which features you want included in Apache by enabling or disabling modules. The modules are compiled as dynamic shared objects (DSO) which can be loaded or unloaded at runtime. Can also choose to compile modules statically by using the option - - enable-module=static
+--prefix –location where Apache is to be installed.
+Also at this point, you can specify which features you want included in Apache by enabling or disabling modules. The modules are compiled as dynamic shared objects (DSO) which can be loaded or unloaded at runtime. Can also choose to compile modules statically by using the option --enable-module=static
 e.g. $ CC=”pgcc’ CFLAGS=”-O2” \
 ```
-./configure - -prefix=/sw/pkg/apache 
-- -enable-ldap=shared 
-- -enable-lua=shared
+./configure --prefix=/sw/pkg/apache 
+--enable-ldap=shared 
+--enable-lua=shared
 ```
 #### Build
 Build the various parts which form the Apache package by running $ make, this will require root privileges.
@@ -130,7 +130,7 @@ $PREFIX/bin/apachectl –k start
 ```
 Can pass additional arguments to config.nice, which will be appended to the original configure options.
 ```
-$ ./config.nice - -prefix=/home/test/apache - -with-port=90
+$ ./config.nice --prefix=/home/test/apache --with-port=90
 ```
 
 ## CONFIGURATION
@@ -499,16 +499,17 @@ iptables –L –v
 ```
 ## VIRTUAL HOSTING
 Virtual host refers to practice of running more than one website on a single machine.
-Two types, IP-based (different IP for every web site) and name-based (multiple names running on each IP address)
+Two types, *IP-based* (different IP for every web site) and *name-based* (multiple names running on each IP address)
 
 ### Setup Name Based Virtual Host
 Create directory where you want to keep all your website’s files, under /var/www/html/. /var/www/html will be the default Document Root in Apache virtual configuration.
 
 ```
-mkdir /var/www/html/example1.com/, mkdir /var/www/html/example2.com/
+mkdir /var/www/html/example1.com/
+mkdir /var/www/html/example2.com/
 ```
 
-To set up Name based virtual hosting you need to tell Apache which IP you will be using to receive Apache requests for all the websites or domain names. Using NameVirtualHost directive in main configuration file.
+To set up name based virtual hosting you need to tell apache which ip you will be using to receive apache requests for all the websites or domain names, using NameVirtualHost directive in main configuration file.
 
 ```
 vi /etc/httpd/conf/httpd.conf
@@ -524,7 +525,7 @@ Add VirtualHost directives
 	DocumentRoot /var/www/html/example1.com
 	ServerName www.example1.com
 	ServerAlias 
-ErrorLog logs/www.example1.com-error_log
+        ErrorLog logs/www.example1.com-error_log
 	CustomLog logs/www.example1.com-access_log common
 </VirtualHost>
 
@@ -554,8 +555,8 @@ vi /var/www/html/example1.com/index.html
 	</title>
      </head>
      <body>
-                  <h1> Hello, Welcome to www.example1.com. </h1>
-      </body>
+           <h1> Hello, Welcome to www.example1.com. </h1>
+     </body>
 </hmtl>
 ```
 Similarly for example2.com and test the setup by accessing both the domains in a browser.
