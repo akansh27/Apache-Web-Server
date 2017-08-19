@@ -28,7 +28,7 @@ Web servers are not only used for serving the World Wide Web. They can also be f
 Apache HTTP Server is free and open-source cross-platform web server software. Apache is developed and maintained by an open community of developers under the auspices of the Apache Software Foundation.
 
 Apache HTTP Server is cross-platform, meaning that it is built for Unix-like systems (e.g., MacOS, Linux and FreeBSD) as well as Windows.
-Apache played a key role in the initial growth of the World Wide Web growing as the dominant HTTP server, and has remained most popular since April 1996. In 2009, it became the first web server software to serve more than 100 million websites.
+Apache played a key role in the initial growth of the World Wide Web then growing as the dominant HTTP server, and has remained most popular since April 1996. In 2009, it became the first web server software to serve more than 100 million websites.
 
 As of July 2016, Apache remained the most widely used web server software, estimated to serve 46% of all active websites and 43% of the top million websites.
 
@@ -38,8 +38,8 @@ As of July 2016, Apache remained the most widely used web server software, estim
 * Authentication modules include mode_access, mod_auth, mod_digest, mod_gzip.
 * SSL and TSL support (mod_ssl), proxy module (mod_proxy), URL rewriter (mod_rewrite), custom log file (mod_log_config), and filtering support (mod_include and mod_ext_filter)
 * Compression method includes external extension module mod_gzip.
-* ModSecurity is an open source intrusion detection and prevention engine for Web applications.
-*Apache logs can be analyzed through web browser using free scripts such as AWStats/W3Perl or Visitors.
+* ModSecurity is an open source intrusion detection and prevention engine for web applications.
+* Apache logs can be analyzed through web browser using free scripts such as AWStats, W3Perl or Visitors.
 * Allows virtual hosting.
 * Features configurable error messages, DBMS based authentication databases, and content negotiation.
 * Supported by several GUIs.
