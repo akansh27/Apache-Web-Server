@@ -1,8 +1,8 @@
 # Introduction
 
-A Web server is a program that uses HTTP (Hypertext Transfer Protocol) to serve the files that form Web pages to users, in response to their requests, which are forwarded by their computers' HTTP clients. Dedicated computers and appliances may be referred to as Web servers as well.
+A web server is a program that uses HTTP (Hypertext Transfer Protocol) to serve the files that form web pages to users, in response to their requests, which are forwarded by their computers' HTTP clients. Dedicated computers and appliances may be referred to as web servers as well.
 
-The process is an example of the client/server model. All computers that host Web sites must have Web server programs. Leading Web servers include Apache (the most widely-installed Web server), Microsoft's Internet Information Server (IIS) and nginx (pronounced engine X) from NGNIX. Other Web servers include Novell's NetWare server, Google Web Server (GWS) and IBM's family of Domino servers.
+The process is an example of the client/server model. All computers that host Web sites must have web server programs. Leading web servers include Apache (the most widely-installed web server), Microsoft's Internet Information Server (IIS) and nginx (pronounced engine X) from NGNIX. Other web servers include Novell's NetWare server, Google Web Server (GWS) and IBM's family of Domino servers.
 
 The primary function of a web server is to store, process and deliver web pages to clients. The communication between client and server takes place using the Hypertext Transfer Protocol (HTTP). Pages delivered are most frequently HTML documents, which may include images, style sheets and scripts in addition to text content.
 
@@ -15,8 +15,9 @@ Many generic web servers also support server-side scripting using Active Server 
 Web servers are not only used for serving the World Wide Web. They can also be found embedded in devices such as printers, routers, webcams and serving only a local network. The web server may then be used as a part of a system for monitoring or administering the device in question. This usually means that no additional software has to be installed on the client computer, since only a web browser is required (which now is included with most operating systems).
 
 ![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/web%20server.PNG?raw=true "Optional Title")
-### Request Flow
-
+```diff
++ ### Request Flow
+```
 ![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/simplehttp.png?raw=true "Optional Title")
 ### Simple Http Request Flow
 
@@ -24,7 +25,7 @@ Web servers are not only used for serving the World Wide Web. They can also be f
 
 Apache HTTP Server is free and open-source cross-platform web server software. Apache is developed and maintained by an open community of developers under the auspices of the Apache Software Foundation.
 
-Apache HTTP Server is cross-platform, meaning that it is built for Unix-like systems (e.g., macOS, Linux and FreeBSD) as well as Windows.
+Apache HTTP Server is cross-platform, meaning that it is built for Unix-like systems (e.g., MacOS, Linux and FreeBSD) as well as Windows.
 Apache played a key role in the initial growth of the World Wide Web growing as the dominant HTTP server, and has remained most popular since April 1996. In 2009, it became the first web server software to serve more than 100 million websites.
 
 As of July 2016, Apache remained the most widely used web server software, estimated to serve 46% of all active websites and 43% of the top million websites.
