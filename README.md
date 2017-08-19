@@ -316,17 +316,17 @@ httpd.conf
 …
 <Directory /var/www/html>
 AuthType Basic
-AuthName “Stooges Web Site: Login with email”
-AuthLDAPURL ldap://ldap.yolinux.com:389/o=stooges?mail
+AuthName “Example Web Site: Login with email”
+AuthLDAPURL ldap://ldap.example.com:389/o=users?mail
 require valid-user
 </Directiry>
 
 Or create the file /var/www/html/.htaccess
 
 
-AuthName “Stooges Web Site: Login with email”
+AuthName “Example Web Site: Login with email”
 AuthType Basic
-AuthLDAPURL ldap://ldap.your-domain.com:389/o=stooges?mail
+AuthLDAPURL ldap://ldap.your-domain.com:389/o=users?mail
 require valids-user
 ```
 Bind with a bind DN: (Password protected LDAP repository)
@@ -336,10 +336,10 @@ httpd.conf
 …
 <Directory /var/www/html>
 AuthType Basic
-AuthName “Stooges Web Site: Login with email”
+AuthName “Example Web Site: Login with email”
 AuthLDAPEnabled on
-AuthLDAPURL ldap://ldap.your-domain.com:389/o=stooges?mail
-AuthLDAPBindDN “cn=StoogeAdmin, o=stooges”
+AuthLDAPURL ldap://ldap.your-domain.com:389/o=users?mail
+AuthLDAPBindDN “cn=Admin, o=users”
 AuthLDAPBindPassword Secret1
 require valid-user
 </Directory>
@@ -360,11 +360,11 @@ File httpd.conf
 …
 <Directory /var/www/html>
 	AuthType Basic
-	AuthName “Stooges Web Site: Login with user id”
+	AuthName “Example Web Site: Login with user id”
 	AuthBasicProvider ldap
 	AuthLDAPAuthoritative on
-	AuthLDAPURL ldap://ldap.your-domain.com:389/o=stooges?uid?sub
-	AuthLDAPBindDN “cn=StoogeAdmin,o=stooges”
+	AuthLDAPURL ldap://ldap.your-domain.com:389/o=users?uid?sub
+	AuthLDAPBindDN “cn=Admin,o=users”
 	AuthLDAPBindPAssword secret1
 	Require ldap-user lary curley moe joe bob mary
 </Directory>
@@ -384,7 +384,7 @@ Require valid-user
 
 Group Authentication:
 LDAP LDIF file:
-dn: cn=users,ou=group,o=stooges
+dn: cn=users,ou=group,o=others
 cn: users
 objectClass: top
 objectClass: posixGroup
@@ -399,15 +399,15 @@ Apache configuration:
 	Order deny,allow
 	Deny from All
 	AuthType Basic
-	AuthName “Stooges Web Site: Login with user id”
+	AuthName “Example Web Site: Login with user id”
 	AuthBasicProvider ldap
 	AuthzLDAPAuthoritative on
-	AuthLDAPURL ldap://ldap.your-domain.com:389/o=stooges?uid?su
-	AuthLDAPBindDN “cn=StoogeAdmin,o=stooges”
+	AuthLDAPURL ldap://ldap.your-domain.com:389/o=others?uid?su
+	AuthLDAPBindDN “cn=Admin,o=others”
 	AuthLDAPBindPassword secret1
 	AuthLDAPGroupAttribute memberUid
 	AuthLDAPGroupAttributeIsDN off
-	Require ldap-group cn=users,ou=group,o=stooges
+	Require ldap-group cn=users,ou=group,o=others
 	Require ldap-attribute gidNumber=100
 	Satisfy any
 </Directory>
