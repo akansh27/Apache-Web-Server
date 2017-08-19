@@ -81,7 +81,7 @@ For some of the scripts like apxs or dbmmanage (which are written in Perl) the P
 
 #### Download
 ```
-Lynx httpd:/httpd.apache.org/download.cgi
+lynx httpd:/httpd.apache.org/download.cgi
 ```
 After downloading verify the version by testing the downloaded tarball against the PGP signature.
 
@@ -175,6 +175,7 @@ Logs is a symlink to where apache stores it’s main configuration files, /var/l
 Symlink to /var/run/httpd. This directory holds only one file, and it should be running when apache running. That file “httpd.pid” stores the main process id for apache.
 
 ### /etc/sysconfig
+The /etc/sysconfig/ directory is where a variety of system configuration files for Red Hat Enterprise Linux are stored like *authconfig*, *init*, *iptables-config*, *network*, etc.
 
 
 ## AUTHENTICATION
