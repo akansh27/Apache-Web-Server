@@ -46,17 +46,7 @@ As of July 2016, Apache remained the most widely used web server software, estim
 * Supports password authentication and digital certificate authentication.
 * Apache provides variety of multiprocessing modules (MPMs) which allows Apache to run in a process-based, hybrid (process and thread), or event-hybrid mode to better match the demands of each particular infrastructure.
 
-## Important topics in Apache web server
-### Installation
-### Deployment
-### Configuration
-### Authentication
-### Virtual Hosting
-### Plug-in Configuration
-### Logging
-### Load balancer
-### Error Codes
-### Troubleshooting
+![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/web%20server.PNG?raw=true "Optional Title")
 
 ## INSTALLATION
 Apache httpd uses libtools and autoconf to create a build environment that looks like many other Open source projects.
