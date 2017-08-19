@@ -489,30 +489,6 @@ iptables –A INPUT –p tcp - -dport 443 –j ACCEPT
 /sbin/service iptables save
 iptables –L –v
 ```
-### HTTP ERROR CODES
-
-![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/2.JPG?raw=true "Optional Title")
-
-![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/3.JPG?raw=true "Optional Title")
-![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/4.JPG?raw=true "Optional Title")
-![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/5.JPG?raw=true "Optional Title")
-![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/6.JPG?raw=true "Optional Title")
-![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/7.JPG?raw=true "Optional Title")
-
-
-### Troubleshooting
-* Check server is actually running 
-```
-ps -ef |grep apache
-ps -ef |grep httpd
-```
-* Check permission on your key and certificate files are set correctly, as well as permissions on your test HTML file and its parent directory.
-* Check the logs, main server logs and SSL logs. Change LogLevel value in config file to ‘debug’ and test again.
-* If the problem is the SSL connection, a useful tool is s_client, which is a diagnostic tool for troubleshooting TLS/SSL connections.
-```
-/usr/bin/openssl s_client –connect http://443
-```
-
 ## VIRTUAL HOSTING
 Virtual host refers to practice of running more than one website on a single machine.
 Two types, IP-based (different IP for every web site) and name-based (multiple names running on each IP address)
@@ -720,4 +696,28 @@ You can configure a custom pattern inside your apache configuration file, and th
 ```
 LogFormat "%h %l %u %t "%r" %>s %b "%{Referer}i" "%{User-agent}i"" combined
 CustomLog log/access_log combined
+```
+
+### HTTP ERROR CODES
+
+![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/2.JPG?raw=true "Optional Title")
+
+![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/3.JPG?raw=true "Optional Title")
+![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/4.JPG?raw=true "Optional Title")
+![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/5.JPG?raw=true "Optional Title")
+![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/6.JPG?raw=true "Optional Title")
+![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/7.JPG?raw=true "Optional Title")
+
+
+### Troubleshooting
+* Check server is actually running 
+```
+ps -ef |grep apache
+ps -ef |grep httpd
+```
+* Check permission on your key and certificate files are set correctly, as well as permissions on your test HTML file and its parent directory.
+* Check the logs, main server logs and SSL logs. Change LogLevel value in config file to ‘debug’ and test again.
+* If the problem is the SSL connection, a useful tool is s_client, which is a diagnostic tool for troubleshooting TLS/SSL connections.
+```
+/usr/bin/openssl s_client –connect http://443
 ```
