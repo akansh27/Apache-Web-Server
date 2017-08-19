@@ -489,6 +489,17 @@ iptables –A INPUT –p tcp - -dport 443 –j ACCEPT
 /sbin/service iptables save
 iptables –L –v
 ```
+### HTTP ERROR CODES
+
+![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/2.JPG?raw=true "Optional Title")
+
+![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/3.JPG?raw=true "Optional Title")
+![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/4.JPG?raw=true "Optional Title")
+![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/5.JPG?raw=true "Optional Title")
+![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/6.JPG?raw=true "Optional Title")
+![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/7.JPG?raw=true "Optional Title")
+
+
 ### Troubleshooting
 * Check server is actually running 
 ```
