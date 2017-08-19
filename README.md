@@ -15,8 +15,10 @@ Many generic web servers also support server-side scripting using Active Server 
 Web servers are not only used for serving the World Wide Web. They can also be found embedded in devices such as printers, routers, webcams and serving only a local network. The web server may then be used as a part of a system for monitoring or administering the device in question. This usually means that no additional software has to be installed on the client computer, since only a web browser is required (which now is included with most operating systems).
 
 ![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/web%20server.PNG?raw=true "Optional Title")
+### Request Flow
 
 ![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/simplehttp.png?raw=true "Optional Title")
+### Simple Http Request Flow
 
 # Apache-Web-Server
 
