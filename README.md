@@ -423,7 +423,7 @@ Apache configuration:
 
 * Getting required software:
 ```
-openSSL and mod_ssl
+OpenSSL and mod_ssl
 yum install mod_ssl openssl
 ```
 * Generate a self-signed certificate
@@ -481,7 +481,7 @@ To add a sister site on port 443
 NameVirtualHost *:443
 <VirtualHost *:443>
 	SSLEngine on
-	SSLCertificateFIle /etc/pki/tls/certs/ca.crt
+	SSLCertificateFile /etc/pki/tls/certs/ca.crt
 	SSLCertificareKeyFile /etc/pki/tls/private/ca.key
 	<Directory /var/www/vhosts/yoursite.com/httpsdocs>
 	AllowOverride All
@@ -493,7 +493,7 @@ NameVirtualHost *:443
 
 * Configuring the firewall
 ```
-iptables –A INPUT –p tcp - -dport 443 –j ACCEPT
+iptables –A INPUT –p tcp --dport 443 –j ACCEPT
 /sbin/service iptables save
 iptables –L –v
 ```
