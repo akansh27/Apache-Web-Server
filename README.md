@@ -317,7 +317,7 @@ httpd.conf
 <Directory /var/www/html>
 AuthType Basic
 AuthName “Example Web Site: Login with email”
-AuthLDAPURL ldap://ldap.example.com:389/o=users?mail
+AuthLDAPURL ldap://ldap.example.com:389/o=example?mail
 require valid-user
 </Directiry>
 
@@ -326,7 +326,7 @@ Or create the file /var/www/html/.htaccess
 
 AuthName “Example Web Site: Login with email”
 AuthType Basic
-AuthLDAPURL ldap://ldap.your-domain.com:389/o=users?mail
+AuthLDAPURL ldap://ldap.your-domain.com:389/o=example?mail
 require valids-user
 ```
 Bind with a bind DN: (Password protected LDAP repository)
@@ -338,8 +338,8 @@ httpd.conf
 AuthType Basic
 AuthName “Example Web Site: Login with email”
 AuthLDAPEnabled on
-AuthLDAPURL ldap://ldap.your-domain.com:389/o=users?mail
-AuthLDAPBindDN “cn=Admin, o=users”
+AuthLDAPURL ldap://ldap.your-domain.com:389/o=example?mail
+AuthLDAPBindDN “cn=Admin, o=example”
 AuthLDAPBindPassword Secret1
 require valid-user
 </Directory>
@@ -363,8 +363,8 @@ File httpd.conf
 	AuthName “Example Web Site: Login with user id”
 	AuthBasicProvider ldap
 	AuthLDAPAuthoritative on
-	AuthLDAPURL ldap://ldap.your-domain.com:389/o=users?uid?sub
-	AuthLDAPBindDN “cn=Admin,o=users”
+	AuthLDAPURL ldap://ldap.your-domain.com:389/o=example?uid?sub
+	AuthLDAPBindDN “cn=Admin,o=example”
 	AuthLDAPBindPAssword secret1
 	Require ldap-user lary curley moe joe bob mary
 </Directory>
@@ -384,7 +384,7 @@ Require valid-user
 
 Group Authentication:
 LDAP LDIF file:
-dn: cn=users,ou=group,o=others
+dn: cn=users,ou=group,o=example
 cn: users
 objectClass: top
 objectClass: posixGroup
@@ -402,12 +402,12 @@ Apache configuration:
 	AuthName “Example Web Site: Login with user id”
 	AuthBasicProvider ldap
 	AuthzLDAPAuthoritative on
-	AuthLDAPURL ldap://ldap.your-domain.com:389/o=others?uid?su
-	AuthLDAPBindDN “cn=Admin,o=others”
+	AuthLDAPURL ldap://ldap.your-domain.com:389/o=example?uid?su
+	AuthLDAPBindDN “cn=Admin,o=example”
 	AuthLDAPBindPassword secret1
 	AuthLDAPGroupAttribute memberUid
 	AuthLDAPGroupAttributeIsDN off
-	Require ldap-group cn=users,ou=group,o=others
+	Require ldap-group cn=users,ou=group,o=example
 	Require ldap-attribute gidNumber=100
 	Satisfy any
 </Directory>
