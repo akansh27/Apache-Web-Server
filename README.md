@@ -19,7 +19,8 @@ Web servers are not only used for serving the World Wide Web. They can also be f
 
 
 ![Alt text](https://github.com/farashahamad/Apache-Web-Server/blob/master/simplehttp.png?raw=true "Optional Title")
-### Simple Http Request Flow
+![#f03c15](https://placehold.it/15/f03c15/000000?text=+) **`Simple Http Request Flow`**
+
 
 # Apache-Web-Server
 
