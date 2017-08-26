@@ -2,7 +2,7 @@
 
 A web server is a program that uses HTTP (Hypertext Transfer Protocol) to serve the files that form web pages to users, in response to their requests, which are forwarded by their computers' HTTP clients. Dedicated computers and appliances may be referred to as web servers as well.
 
-The process is an example of the client/server model. All computers that host Web sites must have web server programs. Leading web servers include Apache (the most widely-installed web server), Microsoft's Internet Information Server (IIS) and nginx (pronounced engine X) from NGNIX. Other web servers include Novell's NetWare server, Google Web Server (GWS) and IBM's family of Domino servers.
+The process is an example of the client/server model. All computers that host web sites must have web server programs. Leading web servers include Apache (the most widely-installed web server), Microsoft's Internet Information Server (IIS) and nginx (pronounced engine X) from NGNIX. Other web servers include Novell's NetWare server, Google Web Server (GWS) and IBM's family of Domino servers.
 
 The primary function of a web server is to store, process and deliver web pages to clients. The communication between client and server takes place using the Hypertext Transfer Protocol (HTTP). Pages delivered are most frequently HTML documents, which may include images, style sheets and scripts in addition to text content.
 
